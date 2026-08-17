@@ -24,7 +24,7 @@ Because a compiled `testing` is committed to the repository, `make` reports `'te
 rm -f ./testing && make
 ```
 
-`cr.sh` bundles that clean rebuild with a run. It carries no shebang and is not marked executable, so it is invoked through a shell rather than as `./cr.sh`:
+`cr.sh` bundles that clean rebuild with a run. Its removal step is a bare `rm`, which reports an error when no executable is present, though the script carries on regardless. It carries no shebang and is not marked executable, so it is invoked through a shell rather than as `./cr.sh`:
 
 ```sh
 bash cr.sh
@@ -36,7 +36,7 @@ bash cr.sh
 ./testing
 ```
 
-The executable first prints the results of its six built-in tests, one `passed` or `failed` line each, and then enters an interactive loop prompting `Run another test? (y/n):`. Answering `y` prompts for two strings and reports whether they are one-to-one mapped; any other answer exits. The tests report their results by printing only — the exit status is `0` whether they pass or fail — so the printed lines are the verdict.
+The executable first prints the results of its built-in tests, one `passed` or `failed` line each, and then enters an interactive loop prompting `Run another test? (y/n):`. Answering `y` prompts for two strings and reports whether they are one-to-one mapped; any other answer exits. The tests report their results by printing only — the exit status is `0` whether they pass or fail — so the printed lines are the verdict.
 
 The prompt blocks on standard input, so piping input (for example `printf 'n\n' | ./testing`) is required when the executable is run non-interactively.
 
