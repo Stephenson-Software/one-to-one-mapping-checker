@@ -1,5 +1,7 @@
+#!/usr/bin/env bash
+
 # remove old executable
-rm ./testing
+make clean
 
 # compile
 make

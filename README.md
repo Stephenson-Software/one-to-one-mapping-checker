@@ -12,22 +12,24 @@ How efficient is the code?
 
 ## Building
 
-The solution lives entirely in `src/testing.cpp`. `make` compiles it into an executable named `testing` in the repository root:
+The solution lives entirely in `src/testing.cpp`. `make` compiles it with `g++ -std=c++17 -Wall -Wextra` into an executable named `testing` in the repository root:
 
 ```sh
 make
 ```
 
-Because a compiled `testing` is committed to the repository, `make` reports `'testing' is up to date` whenever that artifact is newer than the source. The committed copy is also stored without the executable bit, so it has to be rebuilt before it can be run. Deleting it first forces a rebuild:
+Because a compiled `testing` is committed to the repository, nothing is rebuilt whenever that artifact is newer than the source — `make` reports `make: Nothing to be done for 'all'.` and `make testing` reports `make: 'testing' is up to date.`. The committed copy is also stored without the executable bit, so it has to be rebuilt before it can be run. The `clean` target removes it, which forces a rebuild:
 
 ```sh
-rm -f ./testing && make
+make clean && make
 ```
 
-`cr.sh` bundles that clean rebuild with a run. Its removal step is a bare `rm`, which reports an error when no executable is present, though the script carries on regardless. It carries no shebang and is not marked executable, so it is invoked through a shell rather than as `./cr.sh`:
+Warnings are enabled, and the current source compiles with one pre-existing `-Wsign-compare` diagnostic on `checkMapping`'s loop index. The build itself succeeds.
+
+`cr.sh` bundles that clean rebuild with a run:
 
 ```sh
-bash cr.sh
+./cr.sh
 ```
 
 ## Running
