@@ -24,7 +24,7 @@ Because a compiled `testing` is committed to the repository, nothing is rebuilt 
 make clean && make
 ```
 
-Warnings are enabled, and the current source compiles with one pre-existing `-Wsign-compare` diagnostic on `checkMapping`'s loop index. The build itself succeeds.
+Warnings are enabled, and the current source compiles cleanly with no diagnostics.
 
 `cr.sh` bundles that clean rebuild with a run:
 
