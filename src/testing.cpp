@@ -2,7 +2,7 @@
 #include <iostream>
 #include <map>
 
-bool checkMapping(std::string s1, std::string s2) {
+bool checkMapping(const std::string& s1, const std::string& s2) {
     if (s1.length() != s2.length()) {
         return false;
     }
@@ -15,14 +15,15 @@ bool checkMapping(std::string s1, std::string s2) {
 
     std::map<char, char> map;
 
-    for (int i = 0; i < s1.length(); i++) {
+    for (std::string::size_type i = 0; i < s1.length(); i++) {
+        std::map<char, char>::iterator entry = map.find(s1[i]);
         // if the character is not in the map, add it
-        if (map.find(s1[i]) == map.end()) {
+        if (entry == map.end()) {
             map[s1[i]] = s2[i];
         }
         // if the character is in the map, check if it maps to the same character
         else {
-            if (map[s1[i]] != s2[i]) {
+            if (entry->second != s2[i]) {
                 return false;
             }
         }
@@ -33,7 +34,7 @@ bool checkMapping(std::string s1, std::string s2) {
 /**
  * Checks if two strings are one-to-one mapped.
 */
-bool isOneToOneMapping(std::string s1, std::string s2) {
+bool isOneToOneMapping(const std::string& s1, const std::string& s2) {
     bool forwardResult = checkMapping(s1, s2);
     if (!forwardResult) {
         return false;
