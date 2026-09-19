@@ -155,6 +155,98 @@ void runTestFailureDifferentLength() {
     }
 }
 
+void runTestSuccessSingleCharacter() {
+    std::string testName = "runTestSuccessSingleCharacter()";
+    // prepare
+    std::string s1 = "a";
+    std::string s2 = "b";
+
+    // execute
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    if (result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
+void runTestSuccessIdenticalStrings() {
+    std::string testName = "runTestSuccessIdenticalStrings()";
+    // prepare
+    std::string s1 = "abc";
+    std::string s2 = "abc";
+
+    // execute
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    if (result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
+void runTestSuccessRepeatedCharacters() {
+    std::string testName = "runTestSuccessRepeatedCharacters()";
+    // prepare
+    std::string s1 = "aa";
+    std::string s2 = "bb";
+
+    // execute
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    if (result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
+void runTestSuccessMixedCase() {
+    std::string testName = "runTestSuccessMixedCase()";
+    // prepare
+    // 'a' and 'A' are distinct characters, so they may map to different targets
+    std::string s1 = "aA";
+    std::string s2 = "bc";
+
+    // execute
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    if (result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
+void runTestSuccessTab() {
+    std::string testName = "runTestSuccessTab()";
+    // prepare
+    // only the space character is rejected, so a tab is accepted and mapped like any other character
+    std::string s1 = "a\tb";
+    std::string s2 = "b\tc";
+
+    // execute
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    if (result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
 void runInteractiveTest() {
     // prepare
     std::string s1;
@@ -186,6 +278,11 @@ int main() {
     runTestFailureEmptyString();
     runTestFailureSpaces();
     runTestFailureDifferentLength();
+    runTestSuccessSingleCharacter();
+    runTestSuccessIdenticalStrings();
+    runTestSuccessRepeatedCharacters();
+    runTestSuccessMixedCase();
+    runTestSuccessTab();
 
     std::cout << "\n == Interactive Testing == " << std::endl;
     while (true) {
