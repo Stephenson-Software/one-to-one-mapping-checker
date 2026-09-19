@@ -42,6 +42,16 @@ The executable first prints the results of its built-in tests, one `passed` or `
 
 The prompt blocks on standard input, so piping input (for example `printf 'n\n' | ./testing`) is required when the executable is run non-interactively.
 
+### Running the tests non-interactively
+
+The `test` target does that piping for you and turns the printed verdict into an exit status:
+
+```sh
+make test
+```
+
+It rebuilds `testing` from scratch (so the committed copy is never the one run), feeds `n` to the prompt, prints the suite's output, and then exits non-zero if any line contains `failed`, if a `runTest*()` function is defined in `src/testing.cpp` but not called from `main()`, or if fewer `passed` lines appear than there are calls registered in `main()`. On success its last line is `OK: N/N tests passed`, where `N` is the number of registered tests. This is the only invocation whose exit status reflects the test results.
+
 ## Implementation notes
 
 `isOneToOneMapping(s1, s2)` runs the one-directional helper `checkMapping` in both directions, so a mapping is only reported as one-to-one when it holds from `s1` to `s2` *and* from `s2` back to `s1`. That is what makes `foo`/`bar` and `bar`/`foo` both return false: the first conflicts going forward, the second only going back.
