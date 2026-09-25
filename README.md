@@ -62,4 +62,4 @@ Beyond the prompt, `checkMapping` returns false for three classes of input:
 - empty strings — two empty strings are reported as *not* one-to-one mapped,
 - strings containing a space character. Only `' '` is checked, so other whitespace such as a tab is accepted.
 
-The interactive prompt reads with `std::cin >>`, which stops at whitespace, so a string containing a space cannot actually be entered there.
+The interactive prompt reads each string as a whole line with `std::getline`, so a string containing a space can be entered there and is rejected by that rule. Only the first character of the `y/n` answer is read; the rest of that line is discarded.

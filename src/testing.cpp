@@ -1,6 +1,8 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <limits>
+#include <sstream>
 
 bool checkMapping(const std::string& s1, const std::string& s2) {
     if (s1.length() != s2.length()) {
@@ -45,6 +47,15 @@ bool isOneToOneMapping(const std::string& s1, const std::string& s2) {
         return false;
     }
     return true;
+}
+
+/**
+ * Reads one whole line of input, so that strings containing spaces reach isOneToOneMapping.
+*/
+std::string readInputString(std::istream& input) {
+    std::string line;
+    std::getline(input, line);
+    return line;
 }
 
 void runTestSuccess() {
@@ -247,16 +258,34 @@ void runTestSuccessTab() {
     }
 }
 
+void runTestReadInputStringKeepsSpaces() {
+    std::string testName = "runTestReadInputStringKeepsSpaces()";
+    // prepare
+    std::istringstream input("a b\nb c\n");
+
+    // execute
+    std::string s1 = readInputString(input);
+    std::string s2 = readInputString(input);
+
+    // assert
+    if (s1 == "a b" && s2 == "b c") {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
 void runInteractiveTest() {
     // prepare
     std::string s1;
     std::string s2;
 
     std::cout << "Enter the first string: ";
-    std::cin >> s1;
-    
+    s1 = readInputString(std::cin);
+
     std::cout << "Enter the second string: ";
-    std::cin >> s2;
+    s2 = readInputString(std::cin);
 
     // execute
     bool result = isOneToOneMapping(s1, s2);
@@ -283,12 +312,15 @@ int main() {
     runTestSuccessRepeatedCharacters();
     runTestSuccessMixedCase();
     runTestSuccessTab();
+    runTestReadInputStringKeepsSpaces();
 
     std::cout << "\n == Interactive Testing == " << std::endl;
     while (true) {
         char c;
         std::cout << "Run another test? (y/n): ";
         std::cin >> c;
+        // discard the rest of the answer line so the next std::getline starts fresh
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         if (c == 'y') {
             std::cout << std::endl;
             runInteractiveTest();
