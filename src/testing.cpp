@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <limits>
 
 bool checkMapping(const std::string& s1, const std::string& s2) {
     if (s1.length() != s2.length()) {
@@ -252,11 +253,12 @@ void runInteractiveTest() {
     std::string s1;
     std::string s2;
 
+    // read whole lines so that strings containing spaces reach isOneToOneMapping
     std::cout << "Enter the first string: ";
-    std::cin >> s1;
-    
+    std::getline(std::cin, s1);
+
     std::cout << "Enter the second string: ";
-    std::cin >> s2;
+    std::getline(std::cin, s2);
 
     // execute
     bool result = isOneToOneMapping(s1, s2);
@@ -289,6 +291,8 @@ int main() {
         char c;
         std::cout << "Run another test? (y/n): ";
         std::cin >> c;
+        // discard the rest of the answer line so the next std::getline starts fresh
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         if (c == 'y') {
             std::cout << std::endl;
             runInteractiveTest();
