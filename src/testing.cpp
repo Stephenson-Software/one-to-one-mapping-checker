@@ -58,6 +58,18 @@ std::string readInputString(std::istream& input) {
     return line;
 }
 
+/**
+ * Reads the answer to the "Run another test?" prompt and discards the rest of its line.
+ * Returns true only when the answer starts with 'y'; reaching end of input counts as no.
+*/
+bool readRunAnotherAnswer(std::istream& input) {
+    char c = 'n';
+    input >> c;
+    // discard the rest of the answer line so the next std::getline starts fresh
+    input.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    return c == 'y';
+}
+
 void runTestSuccess() {
     std::string testName = "runTestSuccess()";
     // prepare
@@ -276,6 +288,25 @@ void runTestReadInputStringKeepsSpaces() {
     }
 }
 
+void runTestReadRunAnotherAnswerStopsAtEndOfInput() {
+    std::string testName = "runTestReadRunAnotherAnswerStopsAtEndOfInput()";
+    // prepare
+    // a "y" answer followed by end of input, with no closing "n"
+    std::istringstream input("y\n");
+
+    // execute
+    bool first = readRunAnotherAnswer(input);
+    bool second = readRunAnotherAnswer(input);
+
+    // assert
+    if (first && !second) {
+        std::cout << testName << " passed with answers: y and end of input" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answers: y and end of input" << std::endl;
+    }
+}
+
 void runInteractiveTest() {
     // prepare
     std::string s1;
@@ -313,15 +344,12 @@ int main() {
     runTestSuccessMixedCase();
     runTestSuccessTab();
     runTestReadInputStringKeepsSpaces();
+    runTestReadRunAnotherAnswerStopsAtEndOfInput();
 
     std::cout << "\n == Interactive Testing == " << std::endl;
     while (true) {
-        char c;
         std::cout << "Run another test? (y/n): ";
-        std::cin >> c;
-        // discard the rest of the answer line so the next std::getline starts fresh
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        if (c == 'y') {
+        if (readRunAnotherAnswer(std::cin)) {
             std::cout << std::endl;
             runInteractiveTest();
         }

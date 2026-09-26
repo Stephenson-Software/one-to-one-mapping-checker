@@ -38,7 +38,7 @@ Warnings are enabled, and the current source compiles cleanly with no diagnostic
 ./testing
 ```
 
-The executable first prints the results of its built-in tests, one `passed` or `failed` line each, and then enters an interactive loop prompting `Run another test? (y/n):`. Answering `y` prompts for two strings and reports whether they are one-to-one mapped; any other answer exits. The tests report their results by printing only — the exit status is `0` whether they pass or fail — so the printed lines are the verdict.
+The executable first prints the results of its built-in tests, one `passed` or `failed` line each, and then enters an interactive loop prompting `Run another test? (y/n):`. Answering `y` prompts for two strings and reports whether they are one-to-one mapped; any other answer exits, as does reaching the end of standard input. The tests report their results by printing only — the exit status is `0` whether they pass or fail — so the printed lines are the verdict.
 
 The prompt blocks on standard input, so piping input (for example `printf 'n\n' | ./testing`) is required when the executable is run non-interactively.
 
@@ -62,4 +62,4 @@ Beyond the prompt, `checkMapping` returns false for three classes of input:
 - empty strings — two empty strings are reported as *not* one-to-one mapped,
 - strings containing a space character. Only `' '` is checked, so other whitespace such as a tab is accepted.
 
-The interactive prompt reads each string as a whole line with `std::getline`, so a string containing a space can be entered there and is rejected by that rule. Only the first character of the `y/n` answer is read; the rest of that line is discarded.
+The interactive prompt reads each string as a whole line with `std::getline`, so a string containing a space can be entered there and is rejected by that rule. Only the first character of the `y/n` answer is read; the rest of that line is discarded. If standard input ends before an answer is read, the answer is treated as `n`, so input that stops after a `y` round without a closing `n` still exits.
