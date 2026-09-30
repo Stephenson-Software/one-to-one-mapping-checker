@@ -270,6 +270,62 @@ void runTestSuccessTab() {
     }
 }
 
+void runTestSuccessSwappedCharacters() {
+    std::string testName = "runTestSuccessSwappedCharacters()";
+    // prepare
+    // each character maps onto the other, so the mapping is its own inverse
+    std::string s1 = "ab";
+    std::string s2 = "ba";
+
+    // execute
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    if (result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
+void runTestSuccessLongString() {
+    std::string testName = "runTestSuccessLongString()";
+    // prepare
+    std::string s1 = "abcdefghijklmnopqrstuvwxyz";
+    std::string s2 = "zyxwvutsrqponmlkjihgfedcba";
+
+    // execute
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    if (result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
+void runTestFailureLongStringLastCharacter() {
+    std::string testName = "runTestFailureLongStringLastCharacter()";
+    // prepare
+    // every character maps consistently until the last one, where 'a' would map to 'b' instead of 'z'
+    std::string s1 = "abcdefghijklmnopqrstuvwxyza";
+    std::string s2 = "zyxwvutsrqponmlkjihgfedcbab";
+
+    // execute
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    if (!result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
 void runTestReadInputStringKeepsSpaces() {
     std::string testName = "runTestReadInputStringKeepsSpaces()";
     // prepare
@@ -343,6 +399,9 @@ int main() {
     runTestSuccessRepeatedCharacters();
     runTestSuccessMixedCase();
     runTestSuccessTab();
+    runTestSuccessSwappedCharacters();
+    runTestSuccessLongString();
+    runTestFailureLongStringLastCharacter();
     runTestReadInputStringKeepsSpaces();
     runTestReadRunAnotherAnswerStopsAtEndOfInput();
 
