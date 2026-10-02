@@ -363,6 +363,43 @@ void runTestReadRunAnotherAnswerStopsAtEndOfInput() {
     }
 }
 
+void runTestReadRunAnotherAnswerDiscardsRestOfLine() {
+    std::string testName = "runTestReadRunAnotherAnswerDiscardsRestOfLine()";
+    // prepare
+    // a "yes" answer followed by the first string, which must not start with the leftover "es"
+    std::istringstream input("yes\nabg\n");
+
+    // execute
+    bool answer = readRunAnotherAnswer(input);
+    std::string s1 = readInputString(input);
+
+    // assert
+    if (answer && s1 == "abg") {
+        std::cout << testName << " passed with answer: yes and string: " << s1 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answer: yes and string: " << s1 << std::endl;
+    }
+}
+
+void runTestReadRunAnotherAnswerUppercaseIsNo() {
+    std::string testName = "runTestReadRunAnotherAnswerUppercaseIsNo()";
+    // prepare
+    // only a lowercase 'y' counts as yes
+    std::istringstream input("Y\n");
+
+    // execute
+    bool answer = readRunAnotherAnswer(input);
+
+    // assert
+    if (!answer) {
+        std::cout << testName << " passed with answer: Y" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answer: Y" << std::endl;
+    }
+}
+
 void runInteractiveTest() {
     // prepare
     std::string s1;
@@ -404,6 +441,8 @@ int main() {
     runTestFailureLongStringLastCharacter();
     runTestReadInputStringKeepsSpaces();
     runTestReadRunAnotherAnswerStopsAtEndOfInput();
+    runTestReadRunAnotherAnswerDiscardsRestOfLine();
+    runTestReadRunAnotherAnswerUppercaseIsNo();
 
     std::cout << "\n == Interactive Testing == " << std::endl;
     while (true) {
