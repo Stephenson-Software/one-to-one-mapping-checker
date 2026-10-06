@@ -60,7 +60,8 @@ std::string readInputString(std::istream& input) {
 
 /**
  * Reads the answer to the "Run another test?" prompt and discards the rest of its line.
- * Returns true only when the answer starts with 'y'; reaching end of input counts as no.
+ * Returns true only when the first non-whitespace character is 'y', so leading spaces and
+ * empty lines are skipped; reaching end of input counts as no.
 */
 bool readRunAnotherAnswer(std::istream& input) {
     char c = 'n';
@@ -400,6 +401,25 @@ void runTestReadRunAnotherAnswerUppercaseIsNo() {
     }
 }
 
+void runTestReadRunAnotherAnswerSkipsBlankLines() {
+    std::string testName = "runTestReadRunAnotherAnswerSkipsBlankLines()";
+    // prepare
+    // an empty line is not an answer; the read skips it and the leading spaces before the 'y'
+    std::istringstream input("\n  y\nabg\n");
+
+    // execute
+    bool answer = readRunAnotherAnswer(input);
+    std::string s1 = readInputString(input);
+
+    // assert
+    if (answer && s1 == "abg") {
+        std::cout << testName << " passed with answer: blank line then y and string: " << s1 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answer: blank line then y and string: " << s1 << std::endl;
+    }
+}
+
 void runInteractiveTest() {
     // prepare
     std::string s1;
@@ -443,6 +463,7 @@ int main() {
     runTestReadRunAnotherAnswerStopsAtEndOfInput();
     runTestReadRunAnotherAnswerDiscardsRestOfLine();
     runTestReadRunAnotherAnswerUppercaseIsNo();
+    runTestReadRunAnotherAnswerSkipsBlankLines();
 
     std::cout << "\n == Interactive Testing == " << std::endl;
     while (true) {
