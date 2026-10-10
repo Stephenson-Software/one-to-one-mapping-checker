@@ -327,6 +327,64 @@ void runTestFailureLongStringLastCharacter() {
     }
 }
 
+void runTestCheckMappingForwardConflict() {
+    std::string testName = "runTestCheckMappingForwardConflict()";
+    // prepare
+    // 'o' would have to map to both 'a' and 'r', so the forward check alone rejects it
+    std::string s1 = "foo";
+    std::string s2 = "bar";
+
+    // execute
+    bool result = checkMapping(s1, s2);
+
+    // assert
+    if (!result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
+void runTestCheckMappingAllowsManyToOne() {
+    std::string testName = "runTestCheckMappingAllowsManyToOne()";
+    // prepare
+    // 'a' and 'r' both map to 'o'; the one-directional helper accepts that, which is
+    // why isOneToOneMapping also runs it in reverse
+    std::string s1 = "bar";
+    std::string s2 = "foo";
+
+    // execute
+    bool result = checkMapping(s1, s2);
+
+    // assert
+    if (result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
+void runTestCheckMappingSpaceInSecondString() {
+    std::string testName = "runTestCheckMappingSpaceInSecondString()";
+    // prepare
+    // only the second string contains a space; without the space rule the forward mapping would hold
+    std::string s1 = "abc";
+    std::string s2 = "a c";
+
+    // execute
+    bool result = checkMapping(s1, s2);
+
+    // assert
+    if (!result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
 void runTestReadInputStringKeepsSpaces() {
     std::string testName = "runTestReadInputStringKeepsSpaces()";
     // prepare
@@ -459,6 +517,9 @@ int main() {
     runTestSuccessSwappedCharacters();
     runTestSuccessLongString();
     runTestFailureLongStringLastCharacter();
+    runTestCheckMappingForwardConflict();
+    runTestCheckMappingAllowsManyToOne();
+    runTestCheckMappingSpaceInSecondString();
     runTestReadInputStringKeepsSpaces();
     runTestReadRunAnotherAnswerStopsAtEndOfInput();
     runTestReadRunAnotherAnswerDiscardsRestOfLine();
