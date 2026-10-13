@@ -403,6 +403,46 @@ void runTestReadInputStringKeepsSpaces() {
     }
 }
 
+void runTestReadInputStringWithoutTrailingNewline() {
+    std::string testName = "runTestReadInputStringWithoutTrailingNewline()";
+    // prepare
+    // the second string is the last thing in the input, with no closing newline
+    std::istringstream input("abg\nbcd");
+
+    // execute
+    std::string s1 = readInputString(input);
+    std::string s2 = readInputString(input);
+
+    // assert
+    if (s1 == "abg" && s2 == "bcd") {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
+void runTestReadInputStringAtEndOfInput() {
+    std::string testName = "runTestReadInputStringAtEndOfInput()";
+    // prepare
+    // input ends after the first string, so the second read finds nothing
+    std::istringstream input("abg\n");
+
+    // execute
+    std::string s1 = readInputString(input);
+    std::string s2 = readInputString(input);
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    // the missing string reads as empty, so the round is reported as not one-to-one mapped
+    if (s1 == "abg" && s2.empty() && !result) {
+        std::cout << testName << " passed with strings: " << s1 << " and end of input" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and end of input" << std::endl;
+    }
+}
+
 void runTestReadRunAnotherAnswerStopsAtEndOfInput() {
     std::string testName = "runTestReadRunAnotherAnswerStopsAtEndOfInput()";
     // prepare
@@ -521,6 +561,8 @@ int main() {
     runTestCheckMappingAllowsManyToOne();
     runTestCheckMappingSpaceInSecondString();
     runTestReadInputStringKeepsSpaces();
+    runTestReadInputStringWithoutTrailingNewline();
+    runTestReadInputStringAtEndOfInput();
     runTestReadRunAnotherAnswerStopsAtEndOfInput();
     runTestReadRunAnotherAnswerDiscardsRestOfLine();
     runTestReadRunAnotherAnswerUppercaseIsNo();
