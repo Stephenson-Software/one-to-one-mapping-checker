@@ -4,6 +4,12 @@
 #include <limits>
 #include <sstream>
 
+/**
+ * Checks that every character of s1 maps to a single character of s2, in that direction only.
+ * Several characters of s1 may map to the same character of s2; isOneToOneMapping runs this
+ * check both ways to rule that out. Returns false for strings of unequal length, empty strings,
+ * and strings where either one contains a space character (other whitespace is accepted).
+*/
 bool checkMapping(const std::string& s1, const std::string& s2) {
     if (s1.length() != s2.length()) {
         return false;
@@ -34,7 +40,9 @@ bool checkMapping(const std::string& s1, const std::string& s2) {
 }
 
 /**
- * Checks if two strings are one-to-one mapped.
+ * Checks if two strings are one-to-one mapped, by requiring checkMapping to hold from s1 to s2
+ * and from s2 back to s1. Inherits checkMapping's rejections, so strings of unequal length,
+ * empty strings, and strings containing a space are never reported as mapped.
 */
 bool isOneToOneMapping(const std::string& s1, const std::string& s2) {
     bool forwardResult = checkMapping(s1, s2);
