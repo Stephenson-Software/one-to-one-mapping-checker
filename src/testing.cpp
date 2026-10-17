@@ -393,6 +393,63 @@ void runTestCheckMappingSpaceInSecondString() {
     }
 }
 
+void runTestCheckMappingSpaceInFirstString() {
+    std::string testName = "runTestCheckMappingSpaceInFirstString()";
+    // prepare
+    // only the first string contains a space; without the space rule the forward mapping would hold
+    std::string s1 = "a c";
+    std::string s2 = "abc";
+
+    // execute
+    bool result = checkMapping(s1, s2);
+
+    // assert
+    if (!result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
+void runTestCheckMappingRejectsEmptyStrings() {
+    std::string testName = "runTestCheckMappingRejectsEmptyStrings()";
+    // prepare
+    // the one-directional helper itself rejects empty input, not only isOneToOneMapping
+    std::string s1 = "";
+    std::string s2 = "";
+
+    // execute
+    bool result = checkMapping(s1, s2);
+
+    // assert
+    if (!result) {
+        std::cout << testName << " passed with empty strings" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with empty strings" << std::endl;
+    }
+}
+
+void runTestCheckMappingRejectsDifferentLength() {
+    std::string testName = "runTestCheckMappingRejectsDifferentLength()";
+    // prepare
+    // every character of s1 maps consistently onto a prefix of s2, so only the length rule rejects it
+    std::string s1 = "abc";
+    std::string s2 = "abcd";
+
+    // execute
+    bool result = checkMapping(s1, s2);
+
+    // assert
+    if (!result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
 void runTestReadInputStringKeepsSpaces() {
     std::string testName = "runTestReadInputStringKeepsSpaces()";
     // prepare
@@ -568,6 +625,9 @@ int main() {
     runTestCheckMappingForwardConflict();
     runTestCheckMappingAllowsManyToOne();
     runTestCheckMappingSpaceInSecondString();
+    runTestCheckMappingSpaceInFirstString();
+    runTestCheckMappingRejectsEmptyStrings();
+    runTestCheckMappingRejectsDifferentLength();
     runTestReadInputStringKeepsSpaces();
     runTestReadInputStringWithoutTrailingNewline();
     runTestReadInputStringAtEndOfInput();
