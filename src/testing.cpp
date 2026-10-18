@@ -335,6 +335,26 @@ void runTestFailureLongStringLastCharacter() {
     }
 }
 
+void runTestSuccessMultibyteCharacterComparedByByte() {
+    std::string testName = "runTestSuccessMultibyteCharacterComparedByByte()";
+    // prepare
+    // "\xC3\xA9" is the single character 'é' in UTF-8, stored as two bytes; characters are
+    // compared one byte at a time, so it is treated as two characters mapping onto "ab"
+    std::string s1 = "\xC3\xA9";
+    std::string s2 = "ab";
+
+    // execute
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    if (result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
 void runTestCheckMappingForwardConflict() {
     std::string testName = "runTestCheckMappingForwardConflict()";
     // prepare
@@ -622,6 +642,7 @@ int main() {
     runTestSuccessSwappedCharacters();
     runTestSuccessLongString();
     runTestFailureLongStringLastCharacter();
+    runTestSuccessMultibyteCharacterComparedByByte();
     runTestCheckMappingForwardConflict();
     runTestCheckMappingAllowsManyToOne();
     runTestCheckMappingSpaceInSecondString();
