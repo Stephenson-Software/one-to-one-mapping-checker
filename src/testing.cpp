@@ -603,6 +603,41 @@ void runTestReadRunAnotherAnswerSkipsBlankLines() {
     }
 }
 
+void runTestReadRunAnotherAnswerNIsNo() {
+    std::string testName = "runTestReadRunAnotherAnswerNIsNo()";
+    // prepare
+    std::istringstream input("n\n");
+
+    // execute
+    bool answer = readRunAnotherAnswer(input);
+
+    // assert
+    if (!answer) {
+        std::cout << testName << " passed with answer: n" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answer: n" << std::endl;
+    }
+}
+
+void runTestReadRunAnotherAnswerOnlyFirstCharacterCounts() {
+    std::string testName = "runTestReadRunAnotherAnswerOnlyFirstCharacterCounts()";
+    // prepare
+    // the 'y' after the leading 'n' is discarded with the rest of the line, so it is not an answer
+    std::istringstream input("ny\n");
+
+    // execute
+    bool answer = readRunAnotherAnswer(input);
+
+    // assert
+    if (!answer) {
+        std::cout << testName << " passed with answer: ny" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answer: ny" << std::endl;
+    }
+}
+
 void runInteractiveTest() {
     // prepare
     std::string s1;
@@ -656,6 +691,8 @@ int main() {
     runTestReadRunAnotherAnswerDiscardsRestOfLine();
     runTestReadRunAnotherAnswerUppercaseIsNo();
     runTestReadRunAnotherAnswerSkipsBlankLines();
+    runTestReadRunAnotherAnswerNIsNo();
+    runTestReadRunAnotherAnswerOnlyFirstCharacterCounts();
 
     std::cout << "\n == Interactive Testing == " << std::endl;
     while (true) {
