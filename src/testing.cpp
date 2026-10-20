@@ -528,6 +528,48 @@ void runTestReadInputStringAtEndOfInput() {
     }
 }
 
+void runTestReadInputStringKeepsCarriageReturn() {
+    std::string testName = "runTestReadInputStringKeepsCarriageReturn()";
+    // prepare
+    // both lines end in "\r\n"; std::getline stops at '\n' only, so each string keeps its '\r'
+    std::istringstream input("abg\r\nbcd\r\n");
+
+    // execute
+    std::string s1 = readInputString(input);
+    std::string s2 = readInputString(input);
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    // the '\r' sits at the same position in both strings and maps onto itself, so the result still holds
+    if (s1 == "abg\r" && s2 == "bcd\r" && result) {
+        std::cout << testName << " passed with strings: abg\\r and bcd\\r" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: abg\\r and bcd\\r" << std::endl;
+    }
+}
+
+void runTestReadInputStringMixedLineEndings() {
+    std::string testName = "runTestReadInputStringMixedLineEndings()";
+    // prepare
+    // only the first line ends in "\r\n", so only the first string keeps a trailing '\r'
+    std::istringstream input("abg\r\nbcd\n");
+
+    // execute
+    std::string s1 = readInputString(input);
+    std::string s2 = readInputString(input);
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    // the kept '\r' makes the strings unequal in length, so the round is reported as not one-to-one mapped
+    if (s1 == "abg\r" && s2 == "bcd" && !result) {
+        std::cout << testName << " passed with strings: abg\\r and bcd" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: abg\\r and bcd" << std::endl;
+    }
+}
+
 void runTestReadRunAnotherAnswerStopsAtEndOfInput() {
     std::string testName = "runTestReadRunAnotherAnswerStopsAtEndOfInput()";
     // prepare
@@ -687,6 +729,8 @@ int main() {
     runTestReadInputStringKeepsSpaces();
     runTestReadInputStringWithoutTrailingNewline();
     runTestReadInputStringAtEndOfInput();
+    runTestReadInputStringKeepsCarriageReturn();
+    runTestReadInputStringMixedLineEndings();
     runTestReadRunAnotherAnswerStopsAtEndOfInput();
     runTestReadRunAnotherAnswerDiscardsRestOfLine();
     runTestReadRunAnotherAnswerUppercaseIsNo();
