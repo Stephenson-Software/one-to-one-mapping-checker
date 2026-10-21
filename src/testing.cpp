@@ -570,6 +570,27 @@ void runTestReadInputStringMixedLineEndings() {
     }
 }
 
+void runTestReadInputStringBlankLines() {
+    std::string testName = "runTestReadInputStringBlankLines()";
+    // prepare
+    // pressing Enter alone at both string prompts, before more input follows
+    std::istringstream input("\n\nabg\n");
+
+    // execute
+    std::string s1 = readInputString(input);
+    std::string s2 = readInputString(input);
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    // a blank line is read as an empty string rather than skipped, so the round is rejected by the empty-string rule
+    if (s1.empty() && s2.empty() && !result) {
+        std::cout << testName << " passed with two blank lines" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with two blank lines" << std::endl;
+    }
+}
+
 void runTestReadRunAnotherAnswerStopsAtEndOfInput() {
     std::string testName = "runTestReadRunAnotherAnswerStopsAtEndOfInput()";
     // prepare
@@ -731,6 +752,7 @@ int main() {
     runTestReadInputStringAtEndOfInput();
     runTestReadInputStringKeepsCarriageReturn();
     runTestReadInputStringMixedLineEndings();
+    runTestReadInputStringBlankLines();
     runTestReadRunAnotherAnswerStopsAtEndOfInput();
     runTestReadRunAnotherAnswerDiscardsRestOfLine();
     runTestReadRunAnotherAnswerUppercaseIsNo();
