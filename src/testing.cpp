@@ -701,26 +701,68 @@ void runTestReadRunAnotherAnswerOnlyFirstCharacterCounts() {
     }
 }
 
-void runInteractiveTest() {
+/**
+ * Runs one interactive round: prompts for two strings on output, reads them from input, and
+ * reports whether they are one-to-one mapped. main passes std::cin and std::cout.
+*/
+void runInteractiveTest(std::istream& input, std::ostream& output) {
     // prepare
     std::string s1;
     std::string s2;
 
-    std::cout << "Enter the first string: ";
-    s1 = readInputString(std::cin);
+    output << "Enter the first string: ";
+    s1 = readInputString(input);
 
-    std::cout << "Enter the second string: ";
-    s2 = readInputString(std::cin);
+    output << "Enter the second string: ";
+    s2 = readInputString(input);
 
     // execute
     bool result = isOneToOneMapping(s1, s2);
 
     // verify
     if (result) {
-        std::cout << "True. The strings are one-to-one mapped." << std::endl;
+        output << "True. The strings are one-to-one mapped." << std::endl;
     }
     else {
-        std::cout << "False. The strings are not one-to-one mapped." << std::endl;
+        output << "False. The strings are not one-to-one mapped." << std::endl;
+    }
+}
+
+void runTestInteractiveRoundReportsTrue() {
+    std::string testName = "runTestInteractiveRoundReportsTrue()";
+    // prepare
+    std::istringstream input("abg\nbcd\n");
+    std::ostringstream output;
+
+    // execute
+    runInteractiveTest(input, output);
+
+    // assert
+    std::string expected = "Enter the first string: Enter the second string: True. The strings are one-to-one mapped.\n";
+    if (output.str() == expected) {
+        std::cout << testName << " passed with strings: abg and bcd" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: abg and bcd" << std::endl;
+    }
+}
+
+void runTestInteractiveRoundReportsFalse() {
+    std::string testName = "runTestInteractiveRoundReportsFalse()";
+    // prepare
+    std::istringstream input("foo\nbar\n");
+    std::ostringstream output;
+
+    // execute
+    runInteractiveTest(input, output);
+
+    // assert
+    std::string expected = "Enter the first string: Enter the second string: False. The strings are not one-to-one mapped.\n";
+    if (output.str() == expected) {
+        std::cout << testName << " passed with strings: foo and bar" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: foo and bar" << std::endl;
     }
 }
 
@@ -759,13 +801,15 @@ int main() {
     runTestReadRunAnotherAnswerSkipsBlankLines();
     runTestReadRunAnotherAnswerNIsNo();
     runTestReadRunAnotherAnswerOnlyFirstCharacterCounts();
+    runTestInteractiveRoundReportsTrue();
+    runTestInteractiveRoundReportsFalse();
 
     std::cout << "\n == Interactive Testing == " << std::endl;
     while (true) {
         std::cout << "Run another test? (y/n): ";
         if (readRunAnotherAnswer(std::cin)) {
             std::cout << std::endl;
-            runInteractiveTest();
+            runInteractiveTest(std::cin, std::cout);
         }
         else {
             break;
