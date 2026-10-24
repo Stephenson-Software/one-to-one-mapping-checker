@@ -766,6 +766,46 @@ void runTestInteractiveRoundReportsFalse() {
     }
 }
 
+void runTestInteractiveRoundRejectsSpaces() {
+    std::string testName = "runTestInteractiveRoundRejectsSpaces()";
+    // prepare
+    // each line is read whole, so the spaces reach isOneToOneMapping and the space rule rejects the round
+    std::istringstream input("a b\nb c\n");
+    std::ostringstream output;
+
+    // execute
+    runInteractiveTest(input, output);
+
+    // assert
+    std::string expected = "Enter the first string: Enter the second string: False. The strings are not one-to-one mapped.\n";
+    if (output.str() == expected) {
+        std::cout << testName << " passed with strings: a b and b c" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: a b and b c" << std::endl;
+    }
+}
+
+void runTestInteractiveRoundAtEndOfInput() {
+    std::string testName = "runTestInteractiveRoundAtEndOfInput()";
+    // prepare
+    // input ends before either string is entered, so both prompts are still printed and both strings read as empty
+    std::istringstream input("");
+    std::ostringstream output;
+
+    // execute
+    runInteractiveTest(input, output);
+
+    // assert
+    std::string expected = "Enter the first string: Enter the second string: False. The strings are not one-to-one mapped.\n";
+    if (output.str() == expected) {
+        std::cout << testName << " passed with end of input" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with end of input" << std::endl;
+    }
+}
+
 int main() {
     std::cout << " == One-to-One Mapping Tests == " << std::endl;
     runTestSuccess();
@@ -803,6 +843,8 @@ int main() {
     runTestReadRunAnotherAnswerOnlyFirstCharacterCounts();
     runTestInteractiveRoundReportsTrue();
     runTestInteractiveRoundReportsFalse();
+    runTestInteractiveRoundRejectsSpaces();
+    runTestInteractiveRoundAtEndOfInput();
 
     std::cout << "\n == Interactive Testing == " << std::endl;
     while (true) {
