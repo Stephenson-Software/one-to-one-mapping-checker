@@ -728,6 +728,23 @@ void runInteractiveTest(std::istream& input, std::ostream& output) {
     }
 }
 
+/**
+ * Repeats the "Run another test?" prompt, running one interactive round for each 'y' answer,
+ * until any other answer or the end of input. main passes std::cin and std::cout.
+*/
+void runInteractiveLoop(std::istream& input, std::ostream& output) {
+    while (true) {
+        output << "Run another test? (y/n): ";
+        if (readRunAnotherAnswer(input)) {
+            output << std::endl;
+            runInteractiveTest(input, output);
+        }
+        else {
+            break;
+        }
+    }
+}
+
 void runTestInteractiveRoundReportsTrue() {
     std::string testName = "runTestInteractiveRoundReportsTrue()";
     // prepare
@@ -806,6 +823,54 @@ void runTestInteractiveRoundAtEndOfInput() {
     }
 }
 
+void runTestInteractiveLoopRunsRoundsUntilNo() {
+    std::string testName = "runTestInteractiveLoopRunsRoundsUntilNo()";
+    // prepare
+    // two 'y' rounds, then 'n'; the prompt is printed again before every answer
+    std::istringstream input("y\nabg\nbcd\ny\nfoo\nbar\nn\n");
+    std::ostringstream output;
+
+    // execute
+    runInteractiveLoop(input, output);
+
+    // assert
+    std::string expected =
+        "Run another test? (y/n): \n"
+        "Enter the first string: Enter the second string: True. The strings are one-to-one mapped.\n"
+        "Run another test? (y/n): \n"
+        "Enter the first string: Enter the second string: False. The strings are not one-to-one mapped.\n"
+        "Run another test? (y/n): ";
+    if (output.str() == expected) {
+        std::cout << testName << " passed with answers: y, y and n" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answers: y, y and n" << std::endl;
+    }
+}
+
+void runTestInteractiveLoopStopsAtEndOfInput() {
+    std::string testName = "runTestInteractiveLoopStopsAtEndOfInput()";
+    // prepare
+    // one 'y' round with no closing 'n'; reaching end of input at the next prompt ends the loop
+    std::istringstream input("y\nabg\nbcd\n");
+    std::ostringstream output;
+
+    // execute
+    runInteractiveLoop(input, output);
+
+    // assert
+    std::string expected =
+        "Run another test? (y/n): \n"
+        "Enter the first string: Enter the second string: True. The strings are one-to-one mapped.\n"
+        "Run another test? (y/n): ";
+    if (output.str() == expected) {
+        std::cout << testName << " passed with answers: y and end of input" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answers: y and end of input" << std::endl;
+    }
+}
+
 int main() {
     std::cout << " == One-to-One Mapping Tests == " << std::endl;
     runTestSuccess();
@@ -845,17 +910,10 @@ int main() {
     runTestInteractiveRoundReportsFalse();
     runTestInteractiveRoundRejectsSpaces();
     runTestInteractiveRoundAtEndOfInput();
+    runTestInteractiveLoopRunsRoundsUntilNo();
+    runTestInteractiveLoopStopsAtEndOfInput();
 
     std::cout << "\n == Interactive Testing == " << std::endl;
-    while (true) {
-        std::cout << "Run another test? (y/n): ";
-        if (readRunAnotherAnswer(std::cin)) {
-            std::cout << std::endl;
-            runInteractiveTest(std::cin, std::cout);
-        }
-        else {
-            break;
-        }
-    }
+    runInteractiveLoop(std::cin, std::cout);
     return 0;
 }
