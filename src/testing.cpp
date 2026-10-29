@@ -871,6 +871,49 @@ void runTestInteractiveLoopStopsAtEndOfInput() {
     }
 }
 
+void runTestInteractiveLoopStopsAtFirstNo() {
+    std::string testName = "runTestInteractiveLoopStopsAtFirstNo()";
+    // prepare
+    // the answer main receives under `make test`; the prompt is printed once and no round runs
+    std::istringstream input("n\n");
+    std::ostringstream output;
+
+    // execute
+    runInteractiveLoop(input, output);
+
+    // assert
+    std::string expected = "Run another test? (y/n): ";
+    if (output.str() == expected) {
+        std::cout << testName << " passed with answers: n" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answers: n" << std::endl;
+    }
+}
+
+void runTestInteractiveLoopStopsAtOtherAnswer() {
+    std::string testName = "runTestInteractiveLoopStopsAtOtherAnswer()";
+    // prepare
+    // any answer other than 'y' ends the loop, so the strings after 'q' never start a second round
+    std::istringstream input("y\nabg\nbcd\nq\nfoo\nbar\n");
+    std::ostringstream output;
+
+    // execute
+    runInteractiveLoop(input, output);
+
+    // assert
+    std::string expected =
+        "Run another test? (y/n): \n"
+        "Enter the first string: Enter the second string: True. The strings are one-to-one mapped.\n"
+        "Run another test? (y/n): ";
+    if (output.str() == expected) {
+        std::cout << testName << " passed with answers: y and q" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answers: y and q" << std::endl;
+    }
+}
+
 int main() {
     std::cout << " == One-to-One Mapping Tests == " << std::endl;
     runTestSuccess();
@@ -912,6 +955,8 @@ int main() {
     runTestInteractiveRoundAtEndOfInput();
     runTestInteractiveLoopRunsRoundsUntilNo();
     runTestInteractiveLoopStopsAtEndOfInput();
+    runTestInteractiveLoopStopsAtFirstNo();
+    runTestInteractiveLoopStopsAtOtherAnswer();
 
     std::cout << "\n == Interactive Testing == " << std::endl;
     runInteractiveLoop(std::cin, std::cout);
