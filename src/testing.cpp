@@ -701,6 +701,42 @@ void runTestReadRunAnotherAnswerOnlyFirstCharacterCounts() {
     }
 }
 
+void runTestReadRunAnotherAnswerWithoutTrailingNewline() {
+    std::string testName = "runTestReadRunAnotherAnswerWithoutTrailingNewline()";
+    // prepare
+    // the 'y' is the last thing in the input, with no closing newline for the rest of the line to end at
+    std::istringstream input("y");
+
+    // execute
+    bool answer = readRunAnotherAnswer(input);
+
+    // assert
+    if (answer) {
+        std::cout << testName << " passed with answer: y and end of input" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answer: y and end of input" << std::endl;
+    }
+}
+
+void runTestReadRunAnotherAnswerBlankLinesThenEndOfInput() {
+    std::string testName = "runTestReadRunAnotherAnswerBlankLinesThenEndOfInput()";
+    // prepare
+    // pressing Enter alone twice and then ending the input; the skipped blank lines are not an answer
+    std::istringstream input("\n\n");
+
+    // execute
+    bool answer = readRunAnotherAnswer(input);
+
+    // assert
+    if (!answer) {
+        std::cout << testName << " passed with answers: two blank lines and end of input" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answers: two blank lines and end of input" << std::endl;
+    }
+}
+
 /**
  * Runs one interactive round: prompts for two strings on output, reads them from input, and
  * reports whether they are one-to-one mapped. main passes std::cin and std::cout.
@@ -949,6 +985,8 @@ int main() {
     runTestReadRunAnotherAnswerSkipsBlankLines();
     runTestReadRunAnotherAnswerNIsNo();
     runTestReadRunAnotherAnswerOnlyFirstCharacterCounts();
+    runTestReadRunAnotherAnswerWithoutTrailingNewline();
+    runTestReadRunAnotherAnswerBlankLinesThenEndOfInput();
     runTestInteractiveRoundReportsTrue();
     runTestInteractiveRoundReportsFalse();
     runTestInteractiveRoundRejectsSpaces();
