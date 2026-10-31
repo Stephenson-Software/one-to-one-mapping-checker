@@ -737,6 +737,25 @@ void runTestReadRunAnotherAnswerBlankLinesThenEndOfInput() {
     }
 }
 
+void runTestReadRunAnotherAnswerDiscardsCarriageReturn() {
+    std::string testName = "runTestReadRunAnotherAnswerDiscardsCarriageReturn()";
+    // prepare
+    // the answer line ends in "\r\n"; the '\r' is discarded with the rest of that line, so it does not reach the first string
+    std::istringstream input("y\r\nabg\n");
+
+    // execute
+    bool answer = readRunAnotherAnswer(input);
+    std::string s1 = readInputString(input);
+
+    // assert
+    if (answer && s1 == "abg") {
+        std::cout << testName << " passed with answer: y\\r and string: " << s1 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answer: y\\r and string: " << s1 << std::endl;
+    }
+}
+
 /**
  * Runs one interactive round: prompts for two strings on output, reads them from input, and
  * reports whether they are one-to-one mapped. main passes std::cin and std::cout.
@@ -987,6 +1006,7 @@ int main() {
     runTestReadRunAnotherAnswerOnlyFirstCharacterCounts();
     runTestReadRunAnotherAnswerWithoutTrailingNewline();
     runTestReadRunAnotherAnswerBlankLinesThenEndOfInput();
+    runTestReadRunAnotherAnswerDiscardsCarriageReturn();
     runTestInteractiveRoundReportsTrue();
     runTestInteractiveRoundReportsFalse();
     runTestInteractiveRoundRejectsSpaces();
