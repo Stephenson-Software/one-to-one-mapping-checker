@@ -50,7 +50,7 @@ The `test` target does that piping for you and turns the printed verdict into an
 make test
 ```
 
-It rebuilds `testing` from scratch (so the committed copy is never the one run), feeds `n` to the prompt, prints the suite's output, and then exits non-zero if any line contains `failed`, if a `runTest*()` function is defined in `src/testing.cpp` but not called from `main()`, or if fewer `passed` lines appear than there are calls registered in `main()`. On success its last line is `OK: N/N tests passed`, where `N` is the number of registered tests. This is the only invocation whose exit status reflects the test results.
+It rebuilds `testing` from scratch (so the committed copy is never the one run), feeds `n` to the prompt, prints the suite's output, and then exits non-zero if any test prints `failed`, if a `runTest*()` function is defined in `src/testing.cpp` but not called from `main()`, if one is called more than once, or if the number of `passed` lines differs from the number of calls registered in `main()`. If `./testing` itself exits non-zero, for example because it crashed, the target fails at once without printing the suite's output. On success its last line is `OK: N/N tests passed`, where `N` is the number of registered tests. This is the only invocation whose exit status reflects the test results.
 
 ## Implementation notes
 
