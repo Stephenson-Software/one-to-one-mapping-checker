@@ -470,6 +470,26 @@ void runTestCheckMappingRejectsDifferentLength() {
     }
 }
 
+void runTestCheckMappingRejectsLongerFirstString() {
+    std::string testName = "runTestCheckMappingRejectsLongerFirstString()";
+    // prepare
+    // the unequal-length rule must hold in this direction too: isOneToOneMapping cannot pin it,
+    // because its reverse call would reject these strings as the shorter-first case anyway
+    std::string s1 = "abcd";
+    std::string s2 = "abc";
+
+    // execute
+    bool result = checkMapping(s1, s2);
+
+    // assert
+    if (!result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
 void runTestReadInputStringKeepsSpaces() {
     std::string testName = "runTestReadInputStringKeepsSpaces()";
     // prepare
@@ -992,6 +1012,7 @@ int main() {
     runTestCheckMappingSpaceInFirstString();
     runTestCheckMappingRejectsEmptyStrings();
     runTestCheckMappingRejectsDifferentLength();
+    runTestCheckMappingRejectsLongerFirstString();
     runTestReadInputStringKeepsSpaces();
     runTestReadInputStringWithoutTrailingNewline();
     runTestReadInputStringAtEndOfInput();
