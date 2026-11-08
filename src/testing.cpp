@@ -241,6 +241,26 @@ void runTestSuccessRepeatedCharacters() {
     }
 }
 
+void runTestSuccessRepeatedCharacterAfterFirstPosition() {
+    std::string testName = "runTestSuccessRepeatedCharacterAfterFirstPosition()";
+    // prepare
+    // 'g' first appears at position 1 and repeats at position 2, both times opposite 'd' rather
+    // than the first character of s2, so the repeat only matches if 'g' kept its own target
+    std::string s1 = "egg";
+    std::string s2 = "add";
+
+    // execute
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    if (result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
 void runTestSuccessMixedCase() {
     std::string testName = "runTestSuccessMixedCase()";
     // prepare
@@ -1000,6 +1020,7 @@ int main() {
     runTestSuccessSingleCharacter();
     runTestSuccessIdenticalStrings();
     runTestSuccessRepeatedCharacters();
+    runTestSuccessRepeatedCharacterAfterFirstPosition();
     runTestSuccessMixedCase();
     runTestSuccessTab();
     runTestSuccessSwappedCharacters();
