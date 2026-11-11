@@ -966,6 +966,30 @@ void runTestInteractiveLoopStopsAtEndOfInput() {
     }
 }
 
+void runTestInteractiveLoopStopsAfterInputEndsMidRound() {
+    std::string testName = "runTestInteractiveLoopStopsAfterInputEndsMidRound()";
+    // prepare
+    // input ends after the first string of a 'y' round; the second string reads as empty, the
+    // round reports False, and the prompt is printed once more before the loop ends
+    std::istringstream input("y\nabg\n");
+    std::ostringstream output;
+
+    // execute
+    runInteractiveLoop(input, output);
+
+    // assert
+    std::string expected =
+        "Run another test? (y/n): \n"
+        "Enter the first string: Enter the second string: False. The strings are not one-to-one mapped.\n"
+        "Run another test? (y/n): ";
+    if (output.str() == expected) {
+        std::cout << testName << " passed with answers: y, one string and end of input" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answers: y, one string and end of input" << std::endl;
+    }
+}
+
 void runTestInteractiveLoopStopsAtFirstNo() {
     std::string testName = "runTestInteractiveLoopStopsAtFirstNo()";
     // prepare
@@ -1055,6 +1079,7 @@ int main() {
     runTestInteractiveRoundAtEndOfInput();
     runTestInteractiveLoopRunsRoundsUntilNo();
     runTestInteractiveLoopStopsAtEndOfInput();
+    runTestInteractiveLoopStopsAfterInputEndsMidRound();
     runTestInteractiveLoopStopsAtFirstNo();
     runTestInteractiveLoopStopsAtOtherAnswer();
 
