@@ -355,6 +355,26 @@ void runTestFailureLongStringLastCharacter() {
     }
 }
 
+void runTestFailureFirstCharacterConflict() {
+    std::string testName = "runTestFailureFirstCharacterConflict()";
+    // prepare
+    // 'a' maps to 'a' at position 0 and to 'c' at position 2, and that is the only conflict in
+    // either direction, so it is caught only if the first character's mapping is recorded
+    std::string s1 = "aba";
+    std::string s2 = "abc";
+
+    // execute
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    if (!result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
 void runTestSuccessMultibyteCharacterComparedByByte() {
     std::string testName = "runTestSuccessMultibyteCharacterComparedByByte()";
     // prepare
@@ -1050,6 +1070,7 @@ int main() {
     runTestSuccessSwappedCharacters();
     runTestSuccessLongString();
     runTestFailureLongStringLastCharacter();
+    runTestFailureFirstCharacterConflict();
     runTestSuccessMultibyteCharacterComparedByByte();
     runTestCheckMappingForwardConflict();
     runTestCheckMappingAllowsManyToOne();
