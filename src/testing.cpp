@@ -651,6 +651,27 @@ void runTestReadInputStringBlankLines() {
     }
 }
 
+void runTestReadInputStringKeepsSurroundingSpaces() {
+    std::string testName = "runTestReadInputStringKeepsSurroundingSpaces()";
+    // prepare
+    // a stray space before the first string and after the second, around strings that otherwise map
+    std::istringstream input(" abg\nbcd \n");
+
+    // execute
+    std::string s1 = readInputString(input);
+    std::string s2 = readInputString(input);
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    // the spaces are not trimmed, so the round is rejected by the space rule
+    if (s1 == " abg" && s2 == "bcd " && !result) {
+        std::cout << testName << " passed with strings: [" << s1 << "] and [" << s2 << "]" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: [" << s1 << "] and [" << s2 << "]" << std::endl;
+    }
+}
+
 void runTestReadRunAnotherAnswerStopsAtEndOfInput() {
     std::string testName = "runTestReadRunAnotherAnswerStopsAtEndOfInput()";
     // prepare
@@ -1085,6 +1106,7 @@ int main() {
     runTestReadInputStringKeepsCarriageReturn();
     runTestReadInputStringMixedLineEndings();
     runTestReadInputStringBlankLines();
+    runTestReadInputStringKeepsSurroundingSpaces();
     runTestReadRunAnotherAnswerStopsAtEndOfInput();
     runTestReadRunAnotherAnswerDiscardsRestOfLine();
     runTestReadRunAnotherAnswerUppercaseIsNo();
