@@ -169,6 +169,26 @@ void runTestFailureSpaces() {
     }
 }
 
+void runTestFailureSpaceAtStart() {
+    std::string testName = "runTestFailureSpaceAtStart()";
+    // prepare
+    // the only space is the first character of s1, and without the space rule ' ' would map onto 'a',
+    // so it is rejected only if the space rule checks position 0 as well as later positions
+    std::string s1 = " bc";
+    std::string s2 = "abc";
+
+    // execute
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    if (!result) {
+        std::cout << testName << " passed with strings: [" << s1 << "] and [" << s2 << "]" << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: [" << s1 << "] and [" << s2 << "]" << std::endl;
+    }
+}
+
 void runTestFailureDifferentLength() {
     std::string testName = "runTestFailureDifferentLength()";
     // prepare
@@ -1081,6 +1101,7 @@ int main() {
     runTestFailureBarFoo();
     runTestFailureEmptyString();
     runTestFailureSpaces();
+    runTestFailureSpaceAtStart();
     runTestFailureDifferentLength();
     runTestSuccessSingleCharacter();
     runTestSuccessIdenticalStrings();
