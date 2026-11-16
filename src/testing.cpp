@@ -492,6 +492,46 @@ void runTestCheckMappingSpaceInFirstString() {
     }
 }
 
+void runTestCheckMappingSpaceAtStartOfFirstString() {
+    std::string testName = "runTestCheckMappingSpaceAtStartOfFirstString()";
+    // prepare
+    // the space is only at index 0 of s1, so a space search that skipped the first position would
+    // miss it; isOneToOneMapping cannot pin this, since its reverse call checks s1 as the second string
+    std::string s1 = " bc";
+    std::string s2 = "abc";
+
+    // execute
+    bool result = checkMapping(s1, s2);
+
+    // assert
+    if (!result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
+void runTestCheckMappingSpaceAtStartOfSecondString() {
+    std::string testName = "runTestCheckMappingSpaceAtStartOfSecondString()";
+    // prepare
+    // the space is only at index 0 of s2, so a space search that skipped the first position would
+    // miss it; isOneToOneMapping cannot pin this, since its reverse call checks s2 as the first string
+    std::string s1 = "abc";
+    std::string s2 = " bc";
+
+    // execute
+    bool result = checkMapping(s1, s2);
+
+    // assert
+    if (!result) {
+        std::cout << testName << " passed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: " << s1 << " and " << s2 << std::endl;
+    }
+}
+
 void runTestCheckMappingRejectsEmptyStrings() {
     std::string testName = "runTestCheckMappingRejectsEmptyStrings()";
     // prepare
@@ -1118,6 +1158,8 @@ int main() {
     runTestCheckMappingAllowsManyToOne();
     runTestCheckMappingSpaceInSecondString();
     runTestCheckMappingSpaceInFirstString();
+    runTestCheckMappingSpaceAtStartOfFirstString();
+    runTestCheckMappingSpaceAtStartOfSecondString();
     runTestCheckMappingRejectsEmptyStrings();
     runTestCheckMappingRejectsDifferentLength();
     runTestCheckMappingRejectsLongerFirstString();
