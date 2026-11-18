@@ -415,6 +415,26 @@ void runTestSuccessMultibyteCharacterComparedByByte() {
     }
 }
 
+void runTestSuccessEmbeddedNullCharacter() {
+    std::string testName = "runTestSuccessEmbeddedNullCharacter()";
+    // prepare
+    // the null byte in the middle of s1 is an ordinary character of a three-character string, so it
+    // maps onto 'c'; a check that measured s1 as a C string would stop at the null and see only "a"
+    std::string s1("a\0b", 3);
+    std::string s2 = "bcd";
+
+    // execute
+    bool result = isOneToOneMapping(s1, s2);
+
+    // assert
+    if (result) {
+        std::cout << testName << " passed with strings: a\\0b and " << s2 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with strings: a\\0b and " << s2 << std::endl;
+    }
+}
+
 void runTestCheckMappingForwardConflict() {
     std::string testName = "runTestCheckMappingForwardConflict()";
     // prepare
@@ -1154,6 +1174,7 @@ int main() {
     runTestFailureLongStringLastCharacter();
     runTestFailureFirstCharacterConflict();
     runTestSuccessMultibyteCharacterComparedByByte();
+    runTestSuccessEmbeddedNullCharacter();
     runTestCheckMappingForwardConflict();
     runTestCheckMappingAllowsManyToOne();
     runTestCheckMappingSpaceInSecondString();
