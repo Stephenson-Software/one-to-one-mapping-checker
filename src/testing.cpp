@@ -790,6 +790,26 @@ void runTestReadRunAnotherAnswerDiscardsRestOfLine() {
     }
 }
 
+void runTestReadRunAnotherAnswerDiscardsLongAnswerLine() {
+    std::string testName = "runTestReadRunAnotherAnswerDiscardsLongAnswerLine()";
+    // prepare
+    // a long answer line, so a discard that stopped after a few characters would leave the
+    // rest of "yes please" to be read as the first string
+    std::istringstream input("yes please\nabg\n");
+
+    // execute
+    bool answer = readRunAnotherAnswer(input);
+    std::string s1 = readInputString(input);
+
+    // assert
+    if (answer && s1 == "abg") {
+        std::cout << testName << " passed with answer: yes please and string: " << s1 << std::endl;
+    }
+    else {
+        std::cout << testName << " failed with answer: yes please and string: " << s1 << std::endl;
+    }
+}
+
 void runTestReadRunAnotherAnswerUppercaseIsNo() {
     std::string testName = "runTestReadRunAnotherAnswerUppercaseIsNo()";
     // prepare
@@ -1193,6 +1213,7 @@ int main() {
     runTestReadInputStringKeepsSurroundingSpaces();
     runTestReadRunAnotherAnswerStopsAtEndOfInput();
     runTestReadRunAnotherAnswerDiscardsRestOfLine();
+    runTestReadRunAnotherAnswerDiscardsLongAnswerLine();
     runTestReadRunAnotherAnswerUppercaseIsNo();
     runTestReadRunAnotherAnswerSkipsBlankLines();
     runTestReadRunAnotherAnswerNIsNo();
